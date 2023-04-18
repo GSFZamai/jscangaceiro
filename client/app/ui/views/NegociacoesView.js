@@ -1,8 +1,4 @@
-class NegociacoesView {
-
-    constructor(seletor) {
-        this._elemento = document.querySelector(seletor)
-    }
+class NegociacoesView extends View {
 
     template(model) {
         return `
@@ -39,7 +35,4 @@ class NegociacoesView {
         `;
     }
 
-    update(model) {
-        this._elemento.innerHTML = this.template(model);
-    }
 }
