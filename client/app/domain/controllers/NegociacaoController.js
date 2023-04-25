@@ -5,9 +5,21 @@ class NegociacaoController {
         this._inputData = $("#data");
         this._inputQuantidade = $("#quantidade");
         this._inputValor = $("#valor");
-        this._negociacoes = new Negociacoes((model) => {
-            console.log(this);
-            this._negociacoesView.update(model);
+        const self = this;
+        this._negociacoes = new Proxy(new Negociacoes(), {
+            get(target, prop) {
+                if(typeof(target[prop]) === typeof(Function) && ['adiciona', 'esvazia'].includes(prop)) {
+
+                    return function() {
+                        console.log(`"${prop}" disparou na armadilha`);
+                        target[prop].apply(target, arguments);
+                        self._negociacoesView.update(target);
+                    }
+
+                }else {
+                    return target[prop];
+                }
+            }
         });
 
         this._negociacoesView = new NegociacoesView("#negociacoes");
